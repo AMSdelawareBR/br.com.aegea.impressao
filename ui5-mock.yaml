@@ -1,0 +1,48 @@
+specVersion: "3.1"
+metadata:
+  name: br.com.aegea.impressao
+type: application
+server:
+  customMiddleware:
+    - name: fiori-tools-proxy
+      afterMiddleware: compression
+      configuration:
+        ignoreCertError: false
+        ui5:
+          path:
+            - /resources
+            - /test-resources
+          url: https://ui5.sap.com
+        backend:
+          - path: /sap
+            url: http://sapvdfiodtc01.latam.corp.net:8012/
+            client: "400"
+    - name: fiori-tools-appreload
+      afterMiddleware: compression
+      configuration:
+        port: 35729
+        path: webapp
+        delay: 300
+    - name: sap-fe-mockserver
+      beforeMiddleware: csp
+      configuration:
+        mountPath: /
+        services:
+          - urlPath: /sap/opu/odata/sap/ZUI_O2_MAINTENANCE
+            metadataPath: ./webapp/localService/metadata.xml
+            mockdataPath: ./webapp/localService/data
+            generateMockData: true
+        annotations: []
+        service:
+          - urlPath: /sap/opu/odata/sap/ZUI_O2_MAINTENANCE
+            generateMockData: true
+            metadataXmlPath: ./webapp/localService/metadata.xml
+            mockdataRootPath: ./webapp/localService/data
+          - urlPath: /sap/opu/odata/sap/ZGWPM_IMPRIME_DOCUMENTO_SRV/
+            metadataXmlPath: ./webapp/localService/ZGWPM_IMPRIME_DOCUMENTO.xml/metadata.xml
+            mockdataRootPath: ./webapp/localService/ZGWPM_IMPRIME_DOCUMENTO.xml/mockdata
+            generateMockData: true
+          - urlPath: /sap/opu/odata/sap/ZUI_O2_MAINTENANCE/
+            metadataXmlPath: ./webapp/localService/metadata.xml
+            mockdataRootPath: ./webapp/localService/mockdata
+            generateMockData: true

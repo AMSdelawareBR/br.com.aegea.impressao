@@ -1,0 +1,444 @@
+<mvc:View
+    controllerName="br.com.aegea.impressao.controller.Impressao"
+    xmlns:mvc="sap.ui.core.mvc"
+    displayBlock="false"
+    xmlns="sap.m"
+    xmlns:c="sap.ui.core"
+    xmlns:f="sap.ui.layout.form"
+>
+    <Page
+        id="page"
+        showHeader="false"
+    >
+        <content>
+            <VBox id="content">
+                <HBox 
+                    alignContent="Center"
+                    fitContainer="true"
+                    justifyContent="SpaceBetween"
+                    alignItems="Center"
+                >
+                    <Image 
+                        id="logo"
+                        lazyLoading="false"
+                        width="200px"
+                    />
+                    <ObjectHeader
+                        id="idHeader"
+                        title="{MaintenanceDocument} - {Description}"
+                        intro="{ReferenceDocument} - {ReferenceText}"
+                        responsive="true"
+                        modelContextChange="onModelChange"
+                    >
+                        <attributes>
+                            <ObjectAttribute
+                                title="{i18n>DataInicio}"
+                                text="{ path:'StartDate', formatter:'.formatDate' }"
+                            />
+                            <ObjectAttribute
+                                title="{i18n>HoraInicio}"
+                                text="{ path: 'StartTime', formatter:'.formatTime' }"
+                            />
+                            <ObjectAttribute
+                                title="{i18n>DataTermino}"
+                                text="{ path:'EndDate', formatter:'.formatDate' }"
+                            />
+                            <ObjectAttribute
+                                title="{i18n>HoraTermino}"
+                                text="{path: 'EndTime', formatter:'.formatTime' }"
+                            />
+                        </attributes>
+                        <statuses>
+                            <ObjectStatus
+                                title="{i18n>Status}"
+                                text="{ProcessingPhaseDesc}"
+                                icon="{= ${ProcessingPhaseCrit} === 3 ? 'sap-icon://status-positive' : ${ProcessingPhaseCrit} === 2 ? 'sap-icon://status-critical' : ${ProcessingPhaseCrit} === 1 ? 'sap-icon://status-negative' : 'sap-icon://status-inactive' }"
+                                state="{= ${ProcessingPhaseCrit} === 3 ? 'Success' : ${ProcessingPhaseCrit} === 2 ? 'Warning' : ${ProcessingPhaseCrit} === 1 ? 'Error' : 'None' }"
+                            />
+                            <ObjectStatus
+                                title="{i18n>Prioridade}"
+                                text="{MaintPriorityDesc}"
+                                icon="{= ${MaintPriorityCrit} === 3 ? 'sap-icon://status-positive' : ${MaintPriorityCrit} === 2 ? 'sap-icon://status-critical' : ${MaintPriorityCrit} === 1 ? 'sap-icon://status-negative' : 'sap-icon://status-inactive' }"
+                                state="{= ${MaintPriorityCrit} === 3 ? 'Success' : ${MaintPriorityCrit} === 2 ? 'Warning' : ${MaintPriorityCrit} === 1 ? 'Error' : 'None' }"
+                            />
+                        </statuses>
+                    </ObjectHeader>
+                </HBox>
+                <VBox>
+                    <f:SimpleForm
+                        editable="false"
+                        layout="ColumnLayout"
+                        columnsM="2"
+                        columnsL="3"
+                        columnsXL="4"
+                    >
+                        <f:content>
+                            <c:Title text="{i18n>Responsabilidades}" />
+                            <Label text="{i18n>Centro}" />
+                            <Text text="{Plant} - {PlantName}" />
+                            <Label text="{i18n>CentroTrabalho}" />
+                            <Text text="{WorkCenter} - {WorkCenterName}" />
+                            <Label text="{i18n>GrpPlan}" />
+                            <Text
+                                text="{MaintenancePlannerGroup} - {PlannerGroupName}"
+                            />
+                            <Label text="{i18n>CentroPlan}" />
+                            <Text
+                                text="{MaintenancePlanningPlant} - {PlanningPlantName}"
+                            />
+
+                            <c:Title text="{i18n>Localizacao}" />
+                            <Label text="{i18n>LocalInstalacao}" />
+                            <Text
+                                text="{FunctionalLocationLabelName} - {FunctionalLocationName}"
+                            />
+                            <Label text="{i18n>CentroInstalacao}" />
+                            <Text text="{FunctionalLocationPlant}" />
+                            <Label text="{i18n>Equipamento}" />
+                            <Text text="{Equipment} - {EquipmentName}" />
+
+                            <c:Title text="{i18n>Indisponibilidade}" />
+                            <Label text="{i18n>MalfunctionStartDate}" />
+                            <Text
+                                text="{ path:'MalfunctionStartDate', formatter:'.formatDate'}"
+                            />
+                            <Label text="{i18n>MalfunctionStartTime}" />
+                            <Text
+                                text="{ path:'MalfunctionStartTime', formatter:'.formatTime'}"
+                            />
+                            <Label text="{i18n>MalfunctionEndDate}" />
+                            <Text
+                                text="{ path:'MalfunctionEndDate', formatter:'.formatDate'}"
+                            />
+                            <Label text="{i18n>MalfunctionEndTime}" />
+                            <Text
+                                text="{path:'MalfunctionEndTime', formatter:'.formatTime'}"
+                            />
+                            <Label text="{i18n>MaintObjectDowntimeDuration}" />
+                            <Text
+                                text="{MaintObjectDowntimeDuration} {MaintObjDowntimeDurationUnit}"
+                            />
+                        </f:content>
+                    </f:SimpleForm>
+                </VBox>
+                <HBox
+                    alignItems="Center"
+                    alignContent="SpaceAround"
+                >
+                    <Panel
+                        headerText="{i18n>Situacao}"
+                        expandable="false"
+                        expanded="true"
+                    >
+                        <Table items="{to_Situacao}">
+                            <columns>
+                                <Column width="15%">
+                                    <Text text="{i18n>SitNota_Descr}" />
+                                </Column>
+                                <Column width="45%">
+                                    <Text text="{i18n>SitNota_Texto}" />
+                                </Column>
+                                <Column width="10%">
+                                    <Text text="{i18n>SitNota_Nota}" />
+                                </Column>
+                                <Column width="20%">
+                                    <Text text="{i18n>SitNota_Notificador}" />
+                                </Column>
+                                <Column width="10%">
+                                    <Text text="{i18n>SitNota_Ordem}" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="{NotificationText}" />
+                                        <Text text="{LongText}" />
+                                        <Text text="{ReferenceDocument}" />
+                                        <Text text="{ReportedByUserName}" />
+                                        <Text text="{MaintenanceDocument}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </Panel>
+                </HBox>
+                <HBox
+                    alignItems="Center"
+                    alignContent="SpaceAround"
+                >
+                    <Panel
+                        headerText="{i18n>Atividades}"
+                        expandable="false"
+                        expanded="true"
+                    >
+                        <Table
+                            fixedLayout="true"
+                            items="{to_Activities}"
+                        >
+                            <columns>
+                                <Column width="7.5%">
+                                    <Text text="{i18n>Act_Op}" />
+                                </Column>
+                                <Column width="7.5%">
+                                    <Text text="{i18n>Act_SubOp}" />
+                                </Column>
+                                <Column width="20%">
+                                    <Text text="{i18n>Act_Descr}" />
+                                </Column>
+                                <Column width="10%">
+                                    <Text text="{i18n>Act_Qtde}" />
+                                </Column>
+                                <Column width="20%">
+                                    <Text text="{i18n>Act_Resposta}" />
+                                </Column>
+                                <Column width="20%">
+                                    <Text text="{i18n>Act_Desvio}" />
+                                </Column>
+                                <Column width="7.5%">
+                                    <Text text="{i18n>Act_StartDate}" />
+                                </Column>
+                                <Column width="7.5%">
+                                    <Text text="{i18n>Act_EndDate}" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text
+                                            text="{MaintenanceOrderOperation}"
+                                        />
+                                        <Text
+                                            text="{MaintenanceOrderSubOperation}"
+                                        />
+                                        <Text text="{OperationDescription}" />
+                                        <ObjectNumber
+                                            number="{ConfirmationTotalQuantity}"
+                                            unit="{OperationPlannedWorkUnit}"
+                                        />
+                                        <Text text="{Resposta}" />
+                                        <Text text="{VarianceReasonName}" />
+                                        <ObjectIdentifier
+                                            title="{ path:'OperationConfirmedStartDate', formatter: '.formatDate'}"
+                                            text="{ path:'OperationConfirmedStartTime', formatter: '.formatTime'}"
+                                        />
+                                        <ObjectIdentifier
+                                            title="{ path:'OperationConfirmedEndDate', formatter: '.formatDate'}"
+                                            text="{ path:'OperationConfirmedEndTime', formatter: '.formatTime'}"
+                                        />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </Panel>
+                </HBox>
+                <HBox
+                    alignItems="Center"
+                    alignContent="SpaceAround"
+                >
+                    <Panel
+                        headerText="{i18n>Executantes}"
+                        expandable="false"
+                        expanded="true"
+                    >
+                        <Table items="{to_Persons}">
+                            <columns>
+                                <Column>
+                                    <Label text="{i18n>Exec_UserId}" />
+                                </Column>
+                                <Column>
+                                    <Label text="{i18n>Exec_Username}" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="{UserId}" />
+                                        <Text text="{Username}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </Panel>
+                </HBox>
+                <HBox
+                    alignItems="Center"
+                    alignContent="SpaceAround"
+                >
+                    <Panel
+                        headerText="{i18n>Materiais}"
+                        expandable="false"
+                        expanded="true"
+                    >
+                        <Table items="{to_Material}">
+                            <columns>
+                                <Column>
+                                    <Label text="{i18n>Material_Material}" />
+                                </Column>
+                                <Column>
+                                    <Label text="{i18n>Material_Qtde}" />
+                                </Column>
+                                <Column>
+                                    <Label text="{i18n>Material_Op}" />
+                                </Column>
+                                <Column>
+                                    <Label text="{i18n>Material_Reserva}" />
+                                </Column>
+                                <Column visible="false">
+                                    <Label text="{i18n>Material_Deposito}" />
+                                </Column>
+                                <Column>
+                                    <Label text="{i18n>Material_Centro}" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="{ComponentDescription}" />
+                                        <ObjectNumber
+                                            number="{RequirementQuantityInBaseUnit}"
+                                            unit="{BaseUnit}"
+                                        />
+                                        <Text
+                                            text="{MaintenanceOrderOperation}"
+                                        />
+                                        <Text text="{Reservation}" />
+                                        <Text
+                                            visible="false"
+                                            text="{StorageLocation}"
+                                        />
+                                        <Text text="{Plant}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </Panel>
+                </HBox>
+                <HBox
+                    alignItems="Center"
+                    alignContent="SpaceAround"
+                >
+                    <Panel
+                        headerText="{i18n>Medicao}"
+                        expandable="false"
+                        expanded="true"
+                    >
+                        <Table items="{to_MeasurePoint}">
+                            <columns>
+                                <Column>
+                                    <Label text="{i18n>Med_Date}" />
+                                </Column>
+                                <Column>
+                                    <Label text="{i18n>Med_Point}" />
+                                </Column>
+                                <Column>
+                                    <Label text="{i18n>Med_Doc}" />
+                                </Column>
+                                <Column>
+                                    <Label text="{i18n>Med_Item}" />
+                                </Column>
+                                <Column>
+                                    <Label text="{i18n>Med_Val}" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <ObjectIdentifier
+                                            title="{ path:'CreationDate', formatter:'.formatDate' }"
+                                            text="{ path:'CreationTime', formatter:'.formatTime' }"
+                                        />
+                                        <Text text="{MeasuringPoint}" />
+                                        <Text text="{MeasurementDocument}" />
+                                        <Text
+                                            text="{MeasuringPointPositionNumber}"
+                                        />
+                                        <ObjectNumber
+                                            number="{ path: 'MeasurePointValue', formatter: '.formatNumber' }"
+                                            unit="{MeasurePointValueUnit}"
+                                        />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </Panel>
+                </HBox>
+                <VBox>
+                    <Panel
+                        headerText="{i18n>Analise}"
+                        expandable="false"
+                        expanded="true"
+                    >
+                        <Table items="{to_AnaliseDano}">
+                            <columns>
+                                <Column>
+                                    <Label text="{i18n>Anal_Obj}" />
+                                </Column>
+                                <Column>
+                                    <Label text="{i18n>Anal_Perda}" />
+                                </Column>
+                                <Column>
+                                    <Label text="{i18n>Anal_Causa}" />
+                                </Column>
+                                <Column>
+                                    <Label text="{i18n>Anal_Medida}" />
+                                </Column>
+                                <Column>
+                                    <Label text="{i18n>Anal_Actvt}" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="{ObjectPartCodeText}" />
+                                        <Text text="{DamageText}" />
+                                        <Text text="{CauseText}" />
+                                        <Text text="{TaskCodeText}" />
+                                        <Text text="{ActivityText}" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </Panel>
+                </VBox>
+                <VBox>
+                    <Panel
+                        headerText="{i18n>Attach}"
+                        expandable="false"
+                        expanded="true"
+                    >
+                        <Table
+                            items="{to_Anexos}"
+                            updateFinished=".onAttachUpdate"
+                        >
+                            <columns>
+                                <Column
+                                    hAlign="Center"
+                                    vAlign="Middle"
+                                />
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <VBox>
+                                            <Image
+                                                src=""
+                                                width="350px"
+                                            />
+                                            <Avatar
+                                                src=""
+                                                displaySize="XL"
+                                                backgroundColor="Accent6"
+                                                displayShape="Square"
+                                                showBorder="true"
+                                            />
+                                        </VBox>
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </Panel>
+                </VBox>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>
